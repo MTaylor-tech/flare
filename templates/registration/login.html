@@ -1,0 +1,24 @@
+{% extends "flare/base.html" %}
+{% block title %}
+Login
+{% endblock %}
+{% load static %}
+{% block style %}
+input { font-family:Georgia; }
+label[for=id_username] { font-family:Georgia; border-style:none; border-color:black; }
+label[for=id_password] { font-family:Georgia; border-style:none; border-color:black; }
+{% endblock %}
+{% block login_nav %}class="active"{% endblock %}
+{% block content %}
+<!-- templates/registration/login.html -->
+<div class="w3-text-white">
+<h2>Login</h2>
+<form method="post">
+  <span style="font-family:Georgia;">
+  {% csrf_token %}
+  {{ form.as_p }}
+  </span>
+  <button type="submit">Login</button>
+</form>
+</div>
+{% endblock %}

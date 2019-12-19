@@ -1,0 +1,13 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'character/style.css' %}">
+<h1>Characters</h1>
+{% if user_character_list %}
+    <ul>
+    {% for character in user_character_list %}
+        <li><a href="{% url 'character:detail' character.id %}">{{ character.name }} - {{ character.character_race.name }} {{ character.character_class.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No characters are available.</p>
+{% endif %}

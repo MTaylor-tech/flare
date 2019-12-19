@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>{% block title %}{% endblock %}</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+<meta name="description" content="Fantasy Live Action Roleplaying Experience"/>
+<meta name="keywords" content="larp,live,action,roleplay,rpg,medieval,fantasy,nero"/>
+<meta name="author" content="FLARE"/>
+{% load static %}
+{% comment %}{% endcomment %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cinzel:400,700">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cinzel+Decorative:400,700">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=UnifrakturMaguntia">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=UnifrakturCook">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Uncial+Antiqua">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monsieur+La+Doulaise">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Miss+Fajardose">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{% static "flare/css/style.css" %}" media="screen"/>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+<style>
+  {% block style %}
+  {% endblock %}
+  h1, h2, h3 { font-family: "Cinzel Decorative"; }
+  h1 { font-weight: bold; }
+  th, * { font-family: Cinzel; }
+  .footer { text-align: center; }
+  .fancy { font-family: UnifrakturMaguntia; }
+  .fancier { font-family: UnifrakturCook; }
+  .uncial { font-family: "Uncial Antiqua"; }
+  .cursive { font-family: "Monsieur La Doulaise"; }
+  .cursiver { font-family: "Miss Fajardose"; }
+  .biggernav {
+  	font-family:"Cinzel Decorative";
+  	font-size:20px;
+  	font-weight:bold;
+  	color:#311a0b;
+  	text-decoration:none;
+  	padding:0 28px;
+  	text-shadow:0 1px 0 #e5c288;
+  	display:block;
+  }
+  th {font-weight: bold;}
+  input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+  border: 0;
+}
+label {
+    border: 1px solid;
+}
+label:hover {
+    background-color: grey;
+}
+label:focus-within {
+    outline: 5px solid;
+}
+.navigation {
+  font-family: "Cinzel Decorative";
+}
+.w3-sidebar {
+  z-index: 3;
+  width: 250px;
+  top: 43px;
+  bottom: 0;
+  height: inherit;
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 500px;
+  background-color: grey;
+  color: #fff;
+  text-align: inherit;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: 150%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+</style>
+<body>
+<div class="w3-margin">
+  <div id="page">
+		<div id="header">
+			<a id="logo" href="{% url 'news:index' %}"><img src="{% static "flare/images/FLARELogo.png" %}" height=130 alt=""></a>
+			<ul class="navigation">
+				<li class="first" style="font-family:'Cinzel Decorative'">
+					<a {% block news_nav %}{% endblock %} href="{% url 'news:index' %}" style="font-family:'Cinzel Decorative'">Home</a>
+				</li>
+				<li>
+					<a {% block char_nav %}{% endblock %} href="{% url 'character:index' %}" style="font-family:'Cinzel Decorative'">Characters</a>
+				</li>
+				<li>
+					<a {% block lore_nav %}{% endblock %} href="{% url 'lore:index' %}" style="font-family:'Cinzel Decorative'">Lore</a>
+				</li>
+				<li>
+					<a {% block rules_nav %}{% endblock %} href="{% url 'rules:index' %}" style="font-family:'Cinzel Decorative'">Rules</a>
+				</li>
+        <li>
+         {% if user.is_authenticated %}
+            {% if user.profile.is_admin %}
+                <a {% block admin_nav %}{% endblock %} href="{% url 'admin:index' %}">Admin</a>
+            {% endif %}
+         {% endif %}
+       </li>
+      <li>
+        {% if user.is_authenticated %}
+          <span class="biggernav">{{ user.username }}</span></li><li>
+          <a {% block logout_nav %}{% endblock %} href="{% url 'logout' %}" style="font-family:'Cinzel Decorative'">Logout</a>
+        {% else %}
+            <a {% block login_nav %}{% endblock %} href="{% url 'login' %}" style="font-family:'Cinzel Decorative'">Login</a></li><li>
+            <a {% block signup_nav %}{% endblock %} href="{% url 'signup' %}" style="font-family:'Cinzel Decorative'">Sign Up</a>
+        {% endif %}
+        </li>
+			</ul>
+		</div>
+		<div id="body">
+      <div class="content">
+        {% block content %}
+        {% endblock %}
+			</div>
+		</div>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+		<div id="footer">
+			<span class="w3-align-center w3-text-white">&copy; Copyright &copy; 2019 <a href="{% url 'news:index' %}">Fantasy Live Action Roleplaying Experience</a> all rights reserved</span> </div>
+	</div>
+</body>
+{% block javascript %}
+{% endblock %}
+</html>

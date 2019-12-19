@@ -1,0 +1,108 @@
+
+{% extends "flare/base.html" %}
+{% block title %}
+{% if character %}
+  Character: {{ character.name }}
+{% else %}
+  Characters
+{% endif %}
+{% endblock %}
+{% block char_nav %}class="active"{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<h1 class="w3-text-blue-grey">{{ character.name }}</h1>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% comment %}{% url 'character:buyskills' character.id %}{% endcomment %}
+<form action="none" method="post">
+{% csrf_token %}
+<div class="w3-text-white">
+<table class="w3-table">
+  <tr>
+    <th class="w3-right-align">Character Name:</th>
+    <td><input type="text" name="name" id="name" value="{{ character.name }}"></td>
+    <td>&nbsp;</td>
+    <th class="w3-right-align">Player Name:</th>
+    <td>{{ character.user.first_name }} {{ character.user.last_name }}</td>
+    <th class="w3-right-align">#{{ character.id }}</th>
+  </tr>
+  <tr>
+    <th class="w3-right-align">Race:</th>
+    <td><div class="tooltip">{{ character.character_race.name }}
+      <span class="tooltiptext"><p class="w3-center-align">{{ character.character_race.name }}</p><p>{{ character.character_race.notes }}</p></span></div>
+      {% if character.character_subrace %}
+        (<div class="tooltip">{{ character.character_subrace.name }}<span class="tooltiptext">
+          <p class="w3-center-align">{{ character.character_subrace.name }}</p><p>{{ character.character_subrace.notes }}</p></span></div>)
+      {% endif %}</td>
+    <td></td>
+    <td></td>
+    <th class="w3-right-align">Class:</th>
+    <td><div class="tooltip">{{ character.character_class.name }}
+    <span class="tooltiptext"><p class="w3-center-align">{{ character.character_class.name }}</p><p>{{ character.character_class.description }}</p></span></div></td>
+  </tr>
+  <tr>{% load rounding %}
+    <th class="w3-right-align">XP:</th>
+    <td>{{ character.calculate_xp|round_down }}</td>
+    <th class="w3-right-align">XP Spent:</th>
+    <td>{{ character.get_spent_xp|floatformat }}</td>
+    <th class="w3-right-align">XP Free:</th>
+    <td>{{ character.get_free_xp|round_down }}</td>
+  </tr>
+  </table>
+</div>
+<br /><br />
+<h3 class="w3-text-blue-grey">Character Skills</h3>
+<table class="w3-table w3-bordered w3-text-white">
+  <thead>
+  <tr>
+    <th class="w3-right-align">#</th>
+    <th>Skill</th>
+    <th class="w3-right-align">Cost</th>
+  </tr>
+  </thead>
+{% for character_skill in character.character_skill_set.all %}
+  <tr>
+    <td class="w3-right-align">{{ character_skill.multiplier }}</td>
+    <td><div class="tooltip">{{ character_skill.skill.abbrev }}
+    {% if character_skill.option %}
+      ({{ character_skill.option.name }})
+    {% endif %}<span class="tooltiptext">{{ character_skill.skill.name }}<br />{{ character_skill.skill.description }}</span></div></td>
+    <td class="w3-right-align">{{ character_skill.get_total_cost }}</td>
+    {% if character_skill.skill.abbrev == 'MPrf' %}
+      {% if character_skill.option.bonus_skill %}
+      </tr><tr>
+        <td class="w3-right-align">1</td>
+        <td><div class="tooltip">&nbsp; -&nbsp;Bonus Skill: {{ character_skill.option.bonus_skill.abbrev }}
+          <span class="tooltiptext">{{ character_skill.option.bonus_skill.name }}<br />{{ character_skill.option.bonus_skill.description }}</span></div></td>
+        <td></td>
+      {% endif %}
+    {% endif %}
+  </tr>
+{% endfor %}
+
+{% if character.get_free_xp >= 1 %}
+<tr>
+    <td class="w3-right-align"><input name="quantity" type="number"></input></td>
+    <td>
+      <select name="skill">
+        {% for skill in object_list %}
+        <option value="{{ skill.abbrev }}">{{ skill.name }}</option>
+        {% endfor %}
+      </select>
+    {% if character_skill.option %}
+      ({{ character_skill.option.name }})
+    {% endif %}<span class="tooltiptext">{{ character_skill.skill.name }}<br />{{ character_skill.skill.description }}</span></div></td>
+    <td class="w3-right-align">{{ character_skill.get_total_cost }}</td>
+    {% if character_skill.skill.abbrev == 'MPrf' %}
+      {% if character_skill.option.bonus_skill %}
+      </tr><tr>
+        <td class="w3-right-align">1</td>
+        <td><div class="tooltip">&nbsp; -&nbsp;Bonus Skill: {{ character_skill.option.bonus_skill.abbrev }}
+          <span class="tooltiptext">{{ character_skill.option.bonus_skill.name }}<br />{{ character_skill.option.bonus_skill.description }}</span></div></td>
+        <td></td>
+      {% endif %}
+    {% endif %}
+  </tr>
+{% endif %}
+</table>
+  {% endif %}
+  {% endblock %}

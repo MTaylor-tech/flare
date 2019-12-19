@@ -1,0 +1,28 @@
+
+{% extends "flare/base.html" %}
+{% block title %}
+New Character
+{% endblock %}
+{% block style %}
+input { font-family:Georgia; }
+label { font-family:Georgia; border-style:none; border-color:black; }
+label[for=id_name] { font-family:Georgia; border-style:none; border-color:black; }
+label[for=id_character_class] { font-family:Georgia; border-style:none; border-color:black; }
+label[for=id_character_race] { font-family:Georgia; border-style:none; border-color:black; }
+label[for=id_character_subrace] { font-family:Georgia; border-style:none; border-color:black; }
+li { font-family:Georgia; }
+.helptext { font-family:Georgia; }
+{% endblock %}
+{% block char_nav %}class="active"{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<h1 class="w3-text-white">New Character</h1>
+<div class="w3-text-white">
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save">
+</form>
+</div>
+  {% endif %}
+  {% endblock %}

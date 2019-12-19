@@ -1,0 +1,25 @@
+{% extends "flare/base.html" %}
+{% load static %}
+{% load random_image %}
+{% block title %}
+FLARE
+{% endblock %}
+{% block news_nav %}class="active"{% endblock %}
+{% block content %}
+<div class="w3-text-white">
+<h1>News</h1>
+{% if latest_news_list %}
+    <ul class="blog">
+    {% for article in latest_news_list %}
+        <li><a href="{% url 'news:detail_slug' slug=article.slug %}">
+          <h2>{{ article.article_title }}</h2></a>
+          <p>{{ article.pub_date }}</p>
+          <p>{{ article.article_text|truncatewords:50|safe }}</p>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No articles are available.</p>
+{% endif %}
+</div>
+{% endblock %}

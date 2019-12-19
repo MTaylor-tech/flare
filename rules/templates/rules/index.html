@@ -1,0 +1,46 @@
+{% extends "flare/base.html" %}
+{% block title %}
+Rules
+{% endblock %}
+{% block rules_nav %}class="active"{% endblock %}
+{% load static %}
+{% block content %}
+<div class="w3-text-white">
+<h1>Rules</h1>
+{% if latest_rules_list %}
+    <ul class="blog">
+    {% for article in latest_rules_list %}
+        <li><a href="{% url 'rules:detail' article.id %}">
+          <h2>{{ article.article_title }}</h2></a>
+          <p>{{ article.pub_date }}</p>
+          <p>{{ article.article_text|truncatewords:50|safe }}</p>
+        </li>
+        {% if forloop.last %}
+          {% if forloop.counter < 5 %}
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          {% endif %}
+        {% endif %}
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No articles are available.</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+{% endif %}
+</div>
+{% endblock %}
