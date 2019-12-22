@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '0p!mbr_s@ppc_o^l+&pzwbq65gh^51g_yve$-2os3q$aulgddc'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -30,9 +30,10 @@ DEBUG = True
 #SESSION_COOKIE_SECURE = True
 #CSRF_COOKIE_SECURE = True
 X_FRAME_OPTIONS = 'DENY'
-GOOGLE_API_KEY = 'AIzaSyDLs1lseag3hHMEpeN63WY-wvNCNgKLDkE'
 
 ALLOWED_HOSTS = ['127.0.0.1']
+GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
+
 
 
 # Application definition
